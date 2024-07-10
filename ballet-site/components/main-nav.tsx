@@ -1,21 +1,32 @@
 import Link from "next/link";
+import Image from "next/image";
 
 export const MainNav = () => {
   return (
-    <nav className="bg-transparent p-4 flex justify-between items-center drop-shadow-md sticky top-0 z-50">
-      <div className="text-2xl ml-10 font-bold text-pink-600">
-        <Link href="/">Logo</Link>
+    <nav className="bg-transparent p-6 flex justify-between items-center drop-shadow-md sticky top-0 z-50">
+      <div className="text-2xl ml-40 font-extralight text-pink-600">
+        <Link href="/">
+          <Image
+            src="/images/FinalCropchatBalletLogo.png"
+            alt="logo"
+            width={70}
+            height={70}
+          />
+        </Link>
       </div>
-      <ul className="flex space-x-8 text-pink-600 mr-10">
+      <ul className="flex space-x-8 text-black-600 mr-40">
         <li>
-          <Link href="/" className="hover:text-pink-300 underline-animation">
+          <Link
+            href="/"
+            className="hover:text-black-300 font-extralight underline-animation"
+          >
             Home
           </Link>
         </li>
         <li>
           <Link
             href="/about"
-            className="hover:text-pink-300 underline-animation"
+            className="hover:text-black-300 font-extralight underline-animation"
           >
             About
           </Link>
@@ -23,7 +34,7 @@ export const MainNav = () => {
         <li>
           <Link
             href="/contact"
-            className="hover:text-pink-300 underline-animation"
+            className="hover:text-black-300 font-extralight underline-animation"
           >
             Contact Us
           </Link>
