@@ -2,17 +2,17 @@ import Image from "next/image";
 
 export const Hero = () => {
   return (
-    <>
-      <div style={{ height: "2000px" }}>
-        <p className="text-center mt-4">Tis Sticky.</p>
-        <p className="text-center font-bold">But wtf is the image?</p>
+    <div className="flex justify-center min-h-screen">
+      <div className="max-w-screen-md mx-auto">
         <Image
-          src="/public/images/ballet.png "
+          src="/images/ballet.png"
           alt="Ballet Logo"
-          width={100}
-          height={100}
+          layout="responsive"
+          width={9000}
+          height={9000}
+          className="object-contain"
         />
       </div>
-    </>
+    </div>
   );
 };

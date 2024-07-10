@@ -17,10 +17,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link
-          href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&display=swap"
-          rel="stylesheet"
-        />
+        <link />
       </head>
       <body className={inter.className}>{children}</body>
     </html>
