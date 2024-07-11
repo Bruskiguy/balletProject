@@ -16,30 +16,28 @@ export const MainNav = () => {
       </div>
       <ul className="flex space-x-8 text-black-600 mr-40">
         <li>
-          <Link
-            href="/"
-            className="hover:text-black-300 font-extralight underline-animation"
-          >
-            Home
-          </Link>
+          <MenuButton href="/" text="Home" />
         </li>
         <li>
-          <Link
-            href="/about"
-            className="hover:text-black-300 font-extralight underline-animation"
-          >
-            About
-          </Link>
+          <MenuButton href="/about" text="About" />
         </li>
         <li>
-          <Link
-            href="/contact"
-            className="hover:text-black-300 font-extralight underline-animation"
-          >
-            Contact Us
-          </Link>
+          <MenuButton href="/contact" text="Contact Us" />
         </li>
       </ul>
     </nav>
   );
 };
+
+type MenuButtonProps = {
+  href: string;
+  text: string;
+};
+const MenuButton = (props: MenuButtonProps) => (
+  <Link
+    href={props.href}
+    className="hover:text-black-300 font-extralight relative after:absolute after:w-full after:scale-0 after:left-0 after:h-[2px] after:bottom-[-4px] after:bg-[#f9a8d4] after:transition-all after:origin-center hover:after:scale-100"
+  >
+    {props.text}
+  </Link>
+);

@@ -70,8 +70,8 @@
     @apply bg-background text-foreground;
   }
 }
-
-.underline-animation {
+/* 
+.u  {
   position: relative;
 }
 
@@ -91,7 +91,7 @@
 .underline-animation:hover::after {
   transform: scaleX(1);
   transform-origin: center;
-}
+} */
 body {
   font-family: "Noto Sans", sans-serif;
 }

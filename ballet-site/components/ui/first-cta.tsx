@@ -1,7 +1,7 @@
 export const FirstCta = () => {
   return (
     <>
-      <div style={{ height: "2000px" }}>
+      <div style={{ height: "200px" }}>
         <h2 className="flex justify-center cursive-writting mt-10 text-gray-400 text-7xl">
           Join the Team
         </h2>
