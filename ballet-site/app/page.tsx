@@ -10,13 +10,12 @@ export default function Home() {
   return (
     <main>
       <MainNav />
-      <Hero />
       <Tabs />
       <FirstCta />
       <DataTable
         rowDefs={rowDefs}
         rows={rows}
-        previewRows={["name", "age", "job", "looking"]}
+        previewColumns={["name", "age", "job", "looking"]}
       />
     </main>
   );
