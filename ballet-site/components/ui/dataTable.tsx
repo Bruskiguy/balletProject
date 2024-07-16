@@ -1,4 +1,3 @@
-// import { rowDefs, rows } from "../data";
 "use client";
 
 import classNames from "classnames";
