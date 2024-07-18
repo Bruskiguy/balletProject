@@ -36,10 +36,9 @@ export const DataTable = (props: DataTableProps) => {
             <tr key={rowIndex}>
               {props.previewColumns.map((colName) => {
                 const cellValue = rowObject[colName];
-                console
-                  .log
-                  //  `Column ${colName} - Row: ${rowIndex} Value: ${cellValue}`
-                  ();
+                console.log(
+                  `Column ${colName} - Row: ${rowIndex} Value: ${cellValue}`
+                );
                 return (
                   <td
                     key={`${colName}-${rowIndex}`}
