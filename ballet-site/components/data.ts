@@ -6,6 +6,7 @@ export const rowDefs = [
   { label: "Married", name: "married", type: "boolean" },
   { label: "Description", name: "description", type: "textarea" },
 ];
+
 export const rows = [
   {
     name: "John Doe",

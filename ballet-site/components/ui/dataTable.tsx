@@ -1,100 +1,81 @@
 "use client";
 
-import classNames from "classnames";
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { nanoid } from "nanoid";
 
-type RowDef = { name: string; label: string; type: string };
-type Row = Record<string, string | boolean | number>;
+export const DataTable = (props) => {
+  const [cellContent, setCellContent] = useState({});
+  const [editingCell, setEditingCell] = useState(null);
+  const [cellIds, setCellIds] = useState({});
 
-type DataTableProps = {
-  rowDefs: RowDef[];
-  rows: Row[];
-  previewColumns?: string[];
-  editViewType?: "inline" | "expanded";
-};
+  useEffect(() => {
+    const ids = {};
+    props.rows.forEach((row, rowIndex) => {
+      props.previewColumns.forEach((colName) => {
+        ids[`${rowIndex}-${colName}`] = nanoid();
+      });
+    });
+    setCellIds(ids);
+  }, [props.rows, props.previewColumns]);
 
-// create a state for row and row value thats being edited
-//on click make area a text-area
+  const handleCellContentChange = (cellId, value) => {
+    setCellContent({
+      ...cellContent,
+      [cellId]: value,
+    });
+  };
 
-export const DataTable = (props: DataTableProps) => {
-  const [editingCell, setEditingCell] = React.useState<{
-    rowIndex: number;
-    colName: string;
-  }>();
+  const handleCellBlur = () => {
+    setEditingCell(null);
+  };
+
+  const handleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      handleCellBlur();
+    }
+  };
 
   return (
-    <table className=" mx-auto border-collapse border-6 bg-gray-600 transition-colors duration-300 ease-in-out cursor-pointer">
+    <table className="mx-auto border-collapse border-6 bg-gray-200 transition-colors duration-300 ease-in-out cursor-pointer">
       <thead>
         <tr className="bg-gray-500">
-          <>
-            {(props.previewColumns
-              ? props.previewColumns
-              : Object.keys(props.rows[0])
-            ).map((col) => (
-              <th key={col} className="border-2 p-4">
-                {props.rowDefs.find((def) => def.name === col)?.label}
-              </th>
-            ))}
-          </>
+          {props.previewColumns.map((item) => (
+            <th key={nanoid()} className="border-2 p-4">
+              {item}
+            </th>
+          ))}
         </tr>
       </thead>
       <tbody>
-        {props.rows.map((rowItem, index) => (
-          <tr
-            key={index}
-            className="border- transition-all duration-200 ease-in-out"
-          >
-            {(props.previewColumns
-              ? props.previewColumns
-              : Object.keys(rowItem)
-            ).map((columnName, i) => (
-              <td
-                className="hover:bg-gray-700 rounded-md p-3"
-                key={i}
-                onClick={() =>
-                  setEditingCell({ rowIndex: index, colName: columnName })
-                }
-              >
-                {editingCell?.colName === columnName &&
-                editingCell?.rowIndex === index ? (
-                  <EditCell row={rowItem} columnName={columnName} />
-                ) : (
-                  getCellPreviewData(rowItem, columnName, props.rowDefs)
-                )}
-              </td>
-            ))}
+        {props.rows.map((row, rowIndex) => (
+          <tr key={nanoid()}>
+            {props.previewColumns.map((colName) => {
+              const cellId = cellIds[`${rowIndex}-${colName}`];
+              return (
+                <td
+                  key={cellId}
+                  className="border-2 p-4 text-gray-900"
+                  onClick={() => setEditingCell(cellId)}
+                >
+                  {editingCell === cellId ? (
+                    <input
+                      type="text"
+                      value={cellContent[cellId] ?? row[colName]}
+                      onChange={(e) =>
+                        handleCellContentChange(cellId, e.target.value)
+                      }
+                      onKeyPress={handleKeyPress}
+                      autoFocus
+                    />
+                  ) : (
+                    cellContent[cellId] ?? row[colName]
+                  )}
+                </td>
+              );
+            })}
           </tr>
         ))}
       </tbody>
     </table>
   );
 };
-
-type EditCellProps = {
-  row: Row;
-  columnName: string;
-};
-
-export const EditCell = ({ row, columnName }: EditCellProps) => {
-  return (
-    <>
-      <input
-        className="bg-gray-600 border border-gray-300 text-gray-100 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-        name="cellContent"
-        defaultValue={String(row[columnName])}
-      />
-    </>
-  );
-};
-
-// const mapRowValue = (row: Row, columnName: string, rowDefs: RowDef[]) => {
-function getCellPreviewData(row: Row, columnName: string, rowDefs: RowDef[]) {
-  const value = row[columnName];
-  const thisRowDef = rowDefs.find((def) => def.name === columnName);
-
-  if (thisRowDef?.type === "boolean") {
-    return value === true ? "YES" : "NO";
-  }
-
-  return value;
-}
