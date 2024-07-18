@@ -1,22 +1,12 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { nanoid } from "nanoid";
+import React, { useState } from "react";
 
 export const DataTable = (props) => {
   const [cellContent, setCellContent] = useState({});
   const [editingCell, setEditingCell] = useState(null);
-  const [cellIds, setCellIds] = useState({});
 
-  useEffect(() => {
-    const ids = {};
-    props.rows.forEach((row, rowIndex) => {
-      props.previewColumns.forEach((colName) => {
-        ids[`${rowIndex}-${colName}`] = nanoid();
-      });
-    });
-    setCellIds(ids);
-  }, [props.rows, props.previewColumns]);
+  const generateCellId = (rowIndex, colName) => `${rowIndex}-${colName}`;
 
   const handleCellContentChange = (cellId, value) => {
     setCellContent({
@@ -35,12 +25,17 @@ export const DataTable = (props) => {
     }
   };
 
+  // Function to render boolean values as "Yes" or "No"
+  const renderBooleanValue = (value) => {
+    return value ? "Yes" : "No";
+  };
+
   return (
     <table className="mx-auto border-collapse border-6 bg-gray-200 transition-colors duration-300 ease-in-out cursor-pointer">
       <thead>
         <tr className="bg-gray-500">
           {props.previewColumns.map((item) => (
-            <th key={nanoid()} className="border-2 p-4">
+            <th key={item} className="border-2 p-4">
               {item}
             </th>
           ))}
@@ -48,16 +43,18 @@ export const DataTable = (props) => {
       </thead>
       <tbody>
         {props.rows.map((row, rowIndex) => (
-          <tr key={nanoid()}>
+          <tr key={rowIndex}>
             {props.previewColumns.map((colName) => {
-              const cellId = cellIds[`${rowIndex}-${colName}`];
+              const cellId = generateCellId(rowIndex, colName);
+              const isEditing = editingCell === cellId;
+
               return (
                 <td
                   key={cellId}
                   className="border-2 p-4 text-gray-900"
                   onClick={() => setEditingCell(cellId)}
                 >
-                  {editingCell === cellId ? (
+                  {isEditing ? (
                     <input
                       type="text"
                       value={cellContent[cellId] ?? row[colName]}
@@ -67,6 +64,8 @@ export const DataTable = (props) => {
                       onKeyPress={handleKeyPress}
                       autoFocus
                     />
+                  ) : typeof row[colName] === "boolean" ? (
+                    renderBooleanValue(row[colName])
                   ) : (
                     cellContent[cellId] ?? row[colName]
                   )}
