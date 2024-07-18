@@ -25,7 +25,6 @@ export const DataTable = (props) => {
     }
   };
 
-  // Function to render boolean values as "Yes" or "No"
   const renderBooleanValue = (value) => {
     return value ? "Yes" : "No";
   };
