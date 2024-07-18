@@ -2,13 +2,19 @@
 
 import React from "react";
 
-export const DataTable = (props) => {
-  console.log(props);
+type Row = Record<string, string | boolean | number>;
 
-  const [editingCell, setEditingCell] = React.useState({
-    rowIndex: null,
-    colName: null,
-  });
+type DataTableProps = {
+  rows: Row[];
+  previewColumns: string[];
+};
+
+export const DataTable = (props: DataTableProps) => {
+  //console.log(props);
+
+  function boolHandler(bool: boolean) {
+    return bool === true ? "Yes" : "No";
+  }
 
   return (
     <table className="mx-auto border-collapse border-6 bg-gray-600 transition-colors duration-300 ease-in-out cursor-pointer">
@@ -16,7 +22,7 @@ export const DataTable = (props) => {
         <tr className="bg-gray-500">
           {props.previewColumns.map((item) => {
             return (
-              <th key={`${item}-${item}`} className="border-2 p-4">
+              <th key={item} className="border-2 p-4">
                 {item}
               </th>
             );
@@ -24,21 +30,24 @@ export const DataTable = (props) => {
         </tr>
       </thead>
       <tbody>
-        {props.rows.map((row, rowIndex) => {
-          console.log(`Row ${rowIndex}:`, row); // Log the entire row object
+        {props.rows.map((rowObject, rowIndex) => {
+          // console.log(`Row ${rowIndex}:`, rowObject);
           return (
             <tr key={rowIndex}>
               {props.previewColumns.map((colName) => {
-                const cellValue = row[colName];
-                console.log(
-                  `Column ${colName} - Row: ${rowIndex} Value: ${cellValue}`
-                );
+                const cellValue = rowObject[colName];
+                console
+                  .log
+                  //  `Column ${colName} - Row: ${rowIndex} Value: ${cellValue}`
+                  ();
                 return (
                   <td
                     key={`${colName}-${rowIndex}`}
                     className="border-2 p-4 hover:bg-slate-900"
                   >
-                    {cellValue}
+                    {typeof cellValue === "boolean"
+                      ? boolHandler(cellValue)
+                      : cellValue}
                   </td>
                 );
               })}
