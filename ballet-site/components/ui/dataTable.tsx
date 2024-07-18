@@ -1,7 +1,6 @@
 "use client";
 
 import React from "react";
-import { nanoid } from "nanoid";
 
 export const DataTable = (props) => {
   console.log(props);
@@ -17,7 +16,7 @@ export const DataTable = (props) => {
         <tr className="bg-gray-500">
           {props.previewColumns.map((item) => {
             return (
-              <th key={nanoid()} className="border-2 p-4">
+              <th key={`${item}-${item}`} className="border-2 p-4">
                 {item}
               </th>
             );
@@ -26,14 +25,23 @@ export const DataTable = (props) => {
       </thead>
       <tbody>
         {props.rows.map((row, rowIndex) => {
-          console.log(row);
+          console.log(`Row ${rowIndex}:`, row); // Log the entire row object
           return (
-            <tr key={nanoid()}>
-              {props.previewColumns.map((colName) => (
-                <td key={nanoid()} className="border-2 p-4">
-                  {row[colName]}
-                </td>
-              ))}
+            <tr key={rowIndex}>
+              {props.previewColumns.map((colName) => {
+                const cellValue = row[colName];
+                console.log(
+                  `Column ${colName} - Row: ${rowIndex} Value: ${cellValue}`
+                );
+                return (
+                  <td
+                    key={`${colName}-${rowIndex}`}
+                    className="border-2 p-4 hover:bg-slate-900"
+                  >
+                    {cellValue}
+                  </td>
+                );
+              })}
             </tr>
           );
         })}
